@@ -5,18 +5,22 @@ if [ "$(id -u)" -ne 0 ]; then
   exit 1
 fi
 
-if [ $# -lt 2 ]; then
-  echo "Usage: sudo ./utils_drive.sh /dev/sdX n (n is current partition number)" >&2
+if [ $# -lt 1 ]; then
+  echo "Usage: sudo ./utils_drive.sh /dev/sdX [n] (n is current partition number)" >&2
   exit 1
 fi
 
 TGTDEV=$1
 PART=$2
 
-mkdir -p /mnt/tmp
-mount ${TGTDEV}${PART} /mnt/tmp
-rsync -avhP --exclude=".DS_Store" --delete /mnt/tmp/_Temp /tmp
-umount /mnt/tmp
+if [ -n "$PART" ]; then
+  mkdir -p /mnt/tmp
+  mount ${TGTDEV}${PART} /mnt/tmp
+  rsync -avhP --exclude=".DS_Store" --delete /mnt/tmp/_Temp /tmp
+  umount /mnt/tmp
+else
+  read -p "Skipping _Temp folder copy, is this ok? Press enter to continue: "
+fi
 wipefs -a $TGTDEV
 
 sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' <<EOF | fdisk ${TGTDEV}
@@ -34,8 +38,12 @@ EOF
 
 mkfs.exfat -n DEPOTUTILS ${TGTDEV}1 # requires apt install exfat-fuse exfatprogs
 fsck.exfat ${TGTDEV}1
+
 mount ${TGTDEV}1 /mnt/tmp
-mv /tmp/_Temp /mnt/tmp/
 rsync -avhP --exclude="_Temp" --exclude=".DS_Store" /mnt/au/ITS\ Depot/Utils\ Drive/ /mnt/tmp
-mkdir /mnt/tmp/_Temp
+if [ -n "$PART" ]; then
+  mv /tmp/_Temp /mnt/tmp/
+fi
+mkdir -p /mnt/tmp/_Temp
 umount /mnt/tmp
+echo "Done"
