@@ -13,7 +13,7 @@ if [ $# -lt 1 ]; then
 fi
 
 TGTDEV=$1
-ISO="$(find ~+ -type f -name "SDSLiteTouch_x64*" -print0 | xargs -r -0 ls -1 -t)"
+ISO="$(find ~+ -type f -name "SDSLiteTouch*" -print0 | xargs -r -0 ls -1 -t | head -1)"
 
 if [ -n $ISO ]; then
 
