@@ -40,6 +40,7 @@ EOF
 mkfs.exfat -n DEPOTUTILS ${TGTDEV}1 # requires apt install exfat-fuse exfatprogs
 fsck.exfat ${TGTDEV}1
 
+mkdir -p /mnt/au
 if [ -z "$(ls -A /mnt/au)" ]; then
   echo "Need to mount AU share"
   read -p "Enter AU admin username (admin.cruzid): " AU_USER
