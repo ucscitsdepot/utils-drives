@@ -12,6 +12,7 @@ if [ $# -lt 1 ]; then
     exit 1
 fi
 
+# get target device
 TGTDEV=$1
 
 # TODO: verify that the target device exists, is a usb drive with a /dev/sdX path, is writable, etc

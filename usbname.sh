@@ -1,5 +1,10 @@
 #!/usr/bin/bash
 
+# NOTE: this file was for testing, it's not used anywhere. I would like to
+# incorporate this method (or something similar) into the other scripts,
+# so you can select the usb device you want to flash from a web UI and select
+# the type of flash (4-in-1, litetouch, utils drive)
+
 getdevice() {
     idV=${1%:*}
     idP=${1#*:}

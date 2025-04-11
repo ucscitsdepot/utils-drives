@@ -45,6 +45,7 @@ n # new partition
 Y # might get a request to remove exfat signature
 t # change partition type
 11 # Microsoft basic data
+p # print the in-memory partition table
 w # write the partition table and exit
 EOF
 
